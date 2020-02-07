@@ -21,7 +21,7 @@
                <el-dropdown-item>消息</el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
-        <nuxt-link to="/user/login" class="loginto">登录/注册</nuxt-link>
+        <nuxt-link to="/user/login" class="loginto">登录    /   注册</nuxt-link>
       </el-row>
     </el-row>
   </div>
@@ -76,9 +76,10 @@ export default {};
   }
   .user{
       .xiaoxi{
-          font-size: 16px
+          font-size: 14px
       }
       .loginto{
+          font-size: 14px;
           margin-left: 8px;
           color: #666;
           &:hover{
