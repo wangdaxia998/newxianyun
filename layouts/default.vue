@@ -1,16 +1,21 @@
 <template>
   <div>
-    <!-- 内容占位组件 -->
+    <!-- 公共头部组件 -->
     <myheader/>
+    <!-- 内容占位组件 -->
     <nuxt />
+    <!-- 公共底部组件 -->
+    <myfooter/>
   </div>
 </template>
 
 <script>
 import myheader from '@/components/header.vue'
+import myfooter from '@/components/footer.vue'
 export default {
   components:{
-    myheader
+    myheader,
+    myfooter
   }
 }
 </script>
