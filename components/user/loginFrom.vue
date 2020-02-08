@@ -40,8 +40,26 @@ export default {
   methods: {
     // 提交登录
     handleLoginSubmit() {
-      console.log(this.form);
-      
+      this.$refs.form.validate(valid => {
+        if (valid) {
+          // this.$axios({
+          //   url: "/accounts/login",
+          //   method: "POST",
+          //   data: this.form
+          // }).then(res => {
+          //   console.log(res);
+          //   let data = res.data;
+          //   this.$store.commit("user/getuser", data);
+          //     console.log(this.$store);
+          // });
+          this.$store.dispatch("user/login",this.form).then(()=>{
+            this.$message.success('登录成功')
+            this.$router.push('/')
+          })
+        }else{
+            this.$message.error('请输入用户名或密码')
+        }
+      });
     }
   }
 };
