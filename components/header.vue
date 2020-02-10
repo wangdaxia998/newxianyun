@@ -32,17 +32,26 @@
           </span>
           <el-dropdown-menu slot="dropdown">
             <el-dropdown-item>个人中心</el-dropdown-item>
-            <el-dropdown-item>退出</el-dropdown-item>
+            <el-dropdown-item><span @click="quit">退出</span> </el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
       </el-row>
-      <!-- {{$store.state.user.user}} -->
     </el-row>
   </div>
 </template>
 
 <script>
-export default {};
+export default {
+  methods:{
+    quit(){
+      this.$store.commit('user/getuser',{
+        token:'',
+        user:{}
+      })  
+      this.$message.success('退出成功')
+    }
+  }
+};
 </script>
 
 <style scoped lang='less'>
