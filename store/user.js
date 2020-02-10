@@ -19,5 +19,15 @@ export const actions = {
             store.commit("getuser", data);
             // console.log(this.$store);
         });
+    },
+    // 发送手机验证码
+    code(store,data){
+      return  this.$axios({
+            url:'/captchas',
+            method:'POST',
+            data:{ tel:data}
+          })
+          
     }
 }
+

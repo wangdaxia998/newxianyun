@@ -17,7 +17,7 @@
                 <loginFrom v-if="gaoliang == 0"/>
 
                 <!-- 注册功能组件 -->
-                <!-- <RegisterForm v-if="currentTab == 1"/> -->
+                <registerFrom v-if="gaoliang == 1"/>
             </div>
         </el-row>
     </div>
@@ -25,9 +25,11 @@
 
 <script>
 import loginFrom from '@/components/user/loginFrom.vue'
+import registerFrom from '@/components/user/registerFrom.vue'
 export default {
     components:{
-        loginFrom
+        loginFrom,
+        registerFrom
     },
     data(){
         return {
