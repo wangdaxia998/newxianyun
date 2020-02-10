@@ -4,8 +4,8 @@
       <el-input placeholder="用户名手机" v-model="form.username"></el-input>
     </el-form-item>
 
-    <el-form-item class="form-item" prop="code">
-      <el-input placeholder="验证码" v-model="form.code">
+    <el-form-item class="form-item" prop="captcha">
+      <el-input placeholder="验证码" v-model="form.captcha">
         <template slot="append">
           <el-button @click="handleSendCaptcha">发送验证码</el-button>
         </template>
@@ -50,19 +50,31 @@ export default {
           callback();
         }
       };
+      var validateuser = (rule,value,callback)=>{
+        if(value === ''){
+          callback(new Error('请输入用户名'))
+        }else if(/^1[3-9][0-9]{9}$/.test(value)==false){
+          callback(new Error('手机号码格式错误'))
+        }else{
+          callback()
+        }
+      }
     return {
       // 表单数据
       form: {
         username: "",
-        code: "",
+        captcha: "",
         nickname: "",
         password: "",
         checkword: ""
       },
       // 表单规则
       rules: {
-        username: [{ required: true, message: "请输入用户名/手机号", trigger: "blur" }],
-        code: [{ required: true, message: "请输入验证码", trigger: "blur" }],
+        username: [
+          { required: true, message: "请输入用户名/手机号", trigger: "blur" },
+          { validator: validateuser, trigger: "blur" }
+        ],
+        captcha: [{ required: true, message: "请输入验证码", trigger: "blur" }],
         nickname: [{ required: true, message: "请输入昵称", trigger: "blur" }],
         password: [{ validator: validatePass, trigger: "blur" }],
         checkword: [{ validator: validatePass2, trigger: "blur" }]
@@ -76,14 +88,19 @@ export default {
           return
         }
       this.$store.dispatch('user/code',this.form.username).then(res=>{
-        this.$message.success('手机验证码为'+res.data.code)
+        console.log(res); 
+        this.$message.success('手机验证码为:'+ res.data.code)
       })
     },
     // 注册
     handleRegSubmit() {
       this.$refs.form.validate(valid=>{
         if(valid){
-
+          const {checkword,...data} = this.form
+          this.$store.dispatch('user/register',data).then(res=>{
+            this.$message.success('注册成功')
+            this.$router.push('/')
+          })
         }
       })
     }

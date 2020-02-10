@@ -28,6 +28,19 @@ export const actions = {
             data:{ tel:data}
           })
           
+    },
+    //注册登录
+    register(store,data){
+      return  this.$axios({
+            url:'/accounts/register',
+            method:'POST',
+            data
+          }).then(res=>{
+              console.log(res);
+              
+              const {data} = res
+              store.commit('getuser',data)
+          })
     }
 }
 
