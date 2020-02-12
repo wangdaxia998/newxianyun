@@ -10,7 +10,18 @@
         <FlightsHead />
 
         <!-- 航班信息 -->
-        <FlightsItem v-for="(item,index) in flightsData.flights" :key="index"  :data="item" />
+        <FlightsItem v-for="(item,index) in datalist" :key="index" :data="item" />
+
+        <!-- 分页 -->
+        <el-pagination
+          @size-change="handleSizeChange"    
+          @current-change="handleCurrentChange"
+          :current-page="pageIndex"
+          :page-sizes="[5, 10, 15, 20]"
+          :page-size="pageSize"
+          layout="total, sizes, prev, pager, next, jumper"
+          :total="total"
+        ></el-pagination>
       </div>
 
       <!-- 侧边栏 -->
@@ -26,23 +37,53 @@ import moment from "moment";
 import FlightsHead from "@/components/air/flightsHead.vue";
 import FlightsItem from "@/components/air/flightsItem.vue";
 export default {
+  computed:{
+    datalist (){
+      if(!this.flightsData.flights){
+        return []
+      }
+      const arr = this.flightsData.flights.slice(
+        (
+          this.pageIndex - 1) * this.pageSize,
+          this.pageIndex * this.pageSize
+        )
+      return arr
+    }
+  },
   components: {
     FlightsHead,
     FlightsItem
   },
   data() {
     return {
-      flightsData:[]
+      flightsData: [],
+      pageIndex:1,
+      pageSize:5,
+      total:0
     };
   },
-  mounted(){
+  mounted() {
     this.$axios({
-      url:'/airs',
+      url: "/airs",
       params: this.$route.query
-    }).then(res=>{
+    }).then(res => {
       console.log(res);
-      this.flightsData = res.data
-    })
+      this.flightsData = res.data;
+      this.total = res.data.total
+    });
+  },
+  methods:{
+    //切换条数时触发的事件
+    handleSizeChange(index){
+      console.log(index);
+      this.pageSize = index
+    },
+    //切换页数时触发的事件
+    handleCurrentChange(index){
+      console.log(index);
+      this.pageIndex = index
+      
+    }
   }
 };
 </script>
