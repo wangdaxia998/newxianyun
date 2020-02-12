@@ -67,6 +67,19 @@ export default {
       url: "/airs",
       params: this.$route.query
     }).then(res => {
+      if(res.data.flights.length <= 0){
+        this.$confirm('查无该城市航班,点击确定返回','提示',{
+          type:'warning',
+          confirmButtonText: "确定",
+          showCancelButton: false,
+          beforeClose: (action, instance, done)=>{
+            if(action === 'confirm'){
+              this.$router.push('/air')
+              done()
+            }
+          }
+        })
+      }
       console.log(res);
       this.flightsData = res.data;
       this.total = res.data.total
