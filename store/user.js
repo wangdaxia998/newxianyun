@@ -41,6 +41,8 @@ export const actions = {
               const {data} = res
               store.commit('getuser',data)
           })
-    }
+    },
+    // 实时机票
+    
 }
 

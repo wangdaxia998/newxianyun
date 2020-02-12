@@ -202,6 +202,14 @@ export default {
         return;
       }
 
+      // 不通过验证，不需要往下执行
+      if (!valid) return;
+
+      this.$router.push({
+        path: "/air/flights",
+        query: this.form
+      });
+
       this.$router.push({
         path: "/air/flights",
         query: this.form
