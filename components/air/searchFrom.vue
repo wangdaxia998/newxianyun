@@ -46,6 +46,7 @@
           placeholder="请选择日期"
           style="width: 100%;"
           @change="handleDate"
+          :picker-options="pickerOptions1"
           v-model="form.departDate"
         ></el-date-picker>
       </el-form-item>
@@ -77,7 +78,12 @@ export default {
         departDate: ""
       },
       departData: [],
-      destData: []
+      destData: [],
+      pickerOptions1: {
+        disabledDate(time) {
+          return time.getTime() +3600 * 1000 * 24 < Date.now();
+        }
+      }
     };
   },
   methods: {
@@ -201,14 +207,6 @@ export default {
         });
         return;
       }
-
-      // 不通过验证，不需要往下执行
-      if (!valid) return;
-
-      this.$router.push({
-        path: "/air/flights",
-        query: this.form
-      });
 
       this.$router.push({
         path: "/air/flights",
