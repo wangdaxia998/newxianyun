@@ -4,7 +4,7 @@
       <!-- 顶部过滤列表 -->
       <div class="flights-content">
         <!-- 过滤条件 -->
-        <div></div>
+        <FlightsFilters :data="copyflights" @flightslist="flightslist" />
 
         <!-- 航班头部布局 -->
         <FlightsHead />
@@ -14,7 +14,7 @@
 
         <!-- 分页 -->
         <el-pagination
-          @size-change="handleSizeChange"    
+          @size-change="handleSizeChange"
           @current-change="handleCurrentChange"
           :current-page="pageIndex"
           :page-sizes="[5, 10, 15, 20]"
@@ -36,30 +36,40 @@
 import moment from "moment";
 import FlightsHead from "@/components/air/flightsHead.vue";
 import FlightsItem from "@/components/air/flightsItem.vue";
+import FlightsFilters from "@/components/air/flightsFilters.vue";
 export default {
-  computed:{
-    datalist (){
-      if(!this.flightsData.flights){
-        return []
+  computed: {
+    datalist() {
+      if (!this.flightsData.flights) {
+        return [];
       }
       const arr = this.flightsData.flights.slice(
-        (
-          this.pageIndex - 1) * this.pageSize,
-          this.pageIndex * this.pageSize
-        )
-      return arr
+        (this.pageIndex - 1) * this.pageSize,
+        this.pageIndex * this.pageSize
+      );
+      return arr;
     }
   },
   components: {
     FlightsHead,
-    FlightsItem
+    FlightsItem,
+    FlightsFilters
   },
   data() {
     return {
-      flightsData: [],
-      pageIndex:1,
-      pageSize:5,
-      total:0
+      flightsData: {
+        info: {},
+        flights: [],
+        options: {}
+      },
+      copyflights: {
+        info: {},
+        flights: [],
+        options: {}
+      },
+      pageIndex: 1,
+      pageSize: 5,
+      total: 0
     };
   },
   mounted() {
@@ -67,35 +77,39 @@ export default {
       url: "/airs",
       params: this.$route.query
     }).then(res => {
-      if(res.data.flights.length <= 0){
-        this.$confirm('查无该城市航班,点击确定返回','提示',{
-          type:'warning',
+      if (res.data.flights.length <= 0) {
+        this.$confirm("查无该城市航班,点击确定返回", "提示", {
+          type: "warning",
           confirmButtonText: "确定",
           showCancelButton: false,
-          beforeClose: (action, instance, done)=>{
-            if(action === 'confirm'){
-              this.$router.push('/air')
-              done()
+          beforeClose: (action, instance, done) => {
+            if (action === "confirm") {
+              this.$router.push("/air");
+              done();
             }
           }
-        })
+        });
       }
       console.log(res);
       this.flightsData = res.data;
-      this.total = res.data.total
+      this.copyflights = { ...res.data };
+      this.total = res.data.total;
     });
   },
-  methods:{
+  methods: {
     //切换条数时触发的事件
-    handleSizeChange(index){
+    handleSizeChange(index) {
       console.log(index);
-      this.pageSize = index
+      this.pageSize = index;
     },
     //切换页数时触发的事件
-    handleCurrentChange(index){
+    handleCurrentChange(index) {
       console.log(index);
-      this.pageIndex = index
-      
+      this.pageIndex = index;
+    },
+    flightslist(data) {
+      this.flightsData.flights = data;
+      this.total = data.length
     }
   }
 };

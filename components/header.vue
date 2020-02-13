@@ -1,4 +1,5 @@
 <template>
+<div class="headerr">
   <div class="header">
     <el-row type="flex">
       <div class="img">
@@ -38,6 +39,7 @@
       </el-row>
     </el-row>
   </div>
+  </div>
 </template>
 
 <script>
@@ -55,6 +57,10 @@ export default {
 </script>
 
 <style scoped lang='less'>
+.headerr{
+  border-bottom: 2px solid #ccc;
+  box-shadow: 0 3px 0 #f5f5f5
+}
 .header {
   width: 1000px;
   height: 60px;

@@ -1,7 +1,9 @@
-export const state = {
-     userInfo: {
-        user: {}
-    }
+export const state = ()=> {
+    return {
+        userInfo: {
+            user: {}
+        }
+    }    
 }
 export const mutations = {
     getuser(state, data) {

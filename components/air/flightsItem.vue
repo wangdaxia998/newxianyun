@@ -2,7 +2,7 @@
   <div class="flight-item">
     <div @click="isShow = !isShow">
       <!-- 显示的机票信息 -->
-      <el-row type="flex" align="middle" class="flight-info" >
+      <el-row type="flex" align="middle" class="flight-info">
         <el-col :span="6">
           <span>{{data.airline_name}}</span>
           {{data.flight_no}}
@@ -64,18 +64,18 @@ export default {
       default: {}
     }
   },
-  data(){
-      return{
-          isShow:false
-      }
+  data() {
+    return {
+      isShow: false
+    };
   },
   computed: {
     rankTime() {
-      //抵达时间 
-      const end = this.data.arr_time.split(":"); 
-      //出发时间 
+      //抵达时间
+      const end = this.data.arr_time.split(":");
+      //出发时间
       const start = this.data.dep_time.split(":");
-      let endMin = end[0] * 60 + +end[1]; 
+      let endMin = end[0] * 60 + +end[1];
       let startMin = start[0] * 60 + +start[1];
       if (endMin < startMin) {
         endMin += 24 * 60;
@@ -85,7 +85,7 @@ export default {
       const min = dis % 60;
       return `${hours}小时${min}分`;
     }
-  },
+  }
 };
 </script>
 
