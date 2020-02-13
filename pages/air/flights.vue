@@ -11,7 +11,7 @@
 
         <!-- 航班信息 -->
         <FlightsItem v-for="(item,index) in datalist" :key="index" :data="item" />
-
+        <div v-show="isshow" class="shuju"><span class=" el-icon-warning"></span>非常抱歉,没有找到相关结果,请修改筛选条件.</div>
         <!-- 分页 -->
         <el-pagination
           @size-change="handleSizeChange"
@@ -57,6 +57,7 @@ export default {
   },
   data() {
     return {
+      isshow : false,
       flightsData: {
         info: {},
         flights: [],
@@ -110,6 +111,11 @@ export default {
     flightslist(data) {
       this.flightsData.flights = data;
       this.total = data.length
+      if(data.length === 0){
+        this.isshow = true
+      }else{
+        this.isshow = false
+      }
     }
   }
 };
@@ -128,5 +134,18 @@ export default {
 
 .aside {
   width: 240px;
+}
+.shuju{
+  width: 100%;
+  height: 50px;
+  line-height: 50px;
+  text-align: center;
+  font-size: 18px;
+  background-color: #ffffde;
+}
+.el-icon-warning{
+  margin-right: 10px;
+  font-size: 24px;
+  color: #ffa41c
 }
 </style>
