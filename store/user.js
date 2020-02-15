@@ -1,9 +1,9 @@
-export const state = ()=> {
+export const state = () => {
     return {
         userInfo: {
             user: {}
         }
-    }    
+    }
 }
 export const mutations = {
     getuser(state, data) {
@@ -11,8 +11,8 @@ export const mutations = {
     }
 }
 export const actions = {
-    login(store,data) {
-       return this.$axios({
+    login(store, data) {
+        return this.$axios({
             url: "/accounts/login",
             method: "POST",
             data
@@ -23,28 +23,27 @@ export const actions = {
         });
     },
     // 发送手机验证码
-    code(store,data){
-      return  this.$axios({
-            url:'/captchas',
-            method:'POST',
-            data:{ tel:data}
-          })
-          
+    code(store, data) {
+        return this.$axios({
+            url: '/captchas',
+            method: 'POST',
+            data: { tel: data }
+        })
     },
     //注册登录
-    register(store,data){
-      return  this.$axios({
-            url:'/accounts/register',
-            method:'POST',
+    register(store, data) {
+        return this.$axios({
+            url: '/accounts/register',
+            method: 'POST',
             data
-          }).then(res=>{
-              console.log(res);
-              
-              const {data} = res
-              store.commit('getuser',data)
-          })
+        }).then(res => {
+            console.log(res);
+
+            const { data } = res
+            store.commit('getuser', data)
+        })
     },
     // 实时机票
-    
+
 }
 

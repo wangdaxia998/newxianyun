@@ -31,7 +31,7 @@
       <h2>保险</h2>
       <div>
         <div class="insurance-item" v-for="(item,index) in optionair.insurances" :key="index">
-          <el-checkbox :label="`${item.type}：￥${item.price}/份×1  最高赔付${item.compensation}`" border></el-checkbox>
+          <el-checkbox :label="`${item.type}：￥${item.price}/份×1  最高赔付${item.compensation}`" @change="handleinsurances(item.id)"  border></el-checkbox>
         </div>
       </div>
     </div>
@@ -73,8 +73,8 @@ export default {
             id: ""
           }
         ],
-        insurances: [],
-        contactName: "",
+        insurances: [], //保险
+        contactName: "", 
         contactPhone: "",
         captcha: "",
         invoice: false
@@ -91,17 +91,35 @@ export default {
       });
     },
 
+    //保险
+    handleinsurances(id){
+        const index = this.form.insurances.indexOf(id)
+        if(index < -1){
+            this.form.insurances.splice(index,1)
+        }else{
+            this.form.insurances.push(id)
+        }
+    },
+
     // 移除乘机人
     handleDeleteUser(index) {
       this.form.users.splice(index, 1);
     },
 
     // 发送手机验证码
-    handleSendCaptcha() {},
+    handleSendCaptcha() {
+        if(!this.form.contactPhone){
+            this.$message.error('请输入手机号')
+            return
+        }
+        this.$store.dispatch('user/code',this.form.contactPhone).then(res=>{
+            this.$message.success('验证码为:000000')
+        })
+    },
 
     // 提交订单
     handleSubmit() {
-      console.log(this.form.users);
+      console.log(this.form.insurances);
     }
   },
   mounted() {
