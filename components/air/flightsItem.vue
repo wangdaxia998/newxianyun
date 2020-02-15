@@ -46,7 +46,7 @@
             </el-col>
             <el-col :span="5" class="price">{{item.settle_price}}</el-col>
             <el-col :span="3" class="choose-button">
-              <el-button type="warning" size="mini">选定</el-button>
+              <el-button type="warning" size="mini" @click="designate(data.id,item.seat_xid)">选定</el-button>
               <p>剩余：{{item.discount}}</p>
             </el-col>
           </el-row>
@@ -84,6 +84,17 @@ export default {
       const hours = Math.floor(dis / 60);
       const min = dis % 60;
       return `${hours}小时${min}分`;
+    }
+  },
+  methods:{
+    designate(id,seat_xid){      
+      this.$router.push({
+        path:'order',
+        query:{
+          id,
+          seat_xid
+        }
+      })
     }
   }
 };
