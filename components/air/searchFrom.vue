@@ -81,7 +81,7 @@ export default {
       destData: [],
       pickerOptions1: {
         disabledDate(time) {
-          return time.getTime() +3600 * 1000 * 24 < Date.now();
+          return time.getTime() + 3600 * 1000 * 24 < Date.now();
         }
       }
     };
@@ -207,7 +207,7 @@ export default {
         });
         return;
       }
-
+      this.$store.commit('air/airData',this.form)
       this.$router.push({
         path: "/air/flights",
         query: this.form

@@ -107,8 +107,6 @@ export default {
 
         return valid;
       });
-      console.log(this.data);
-      
       this.$emit("flightslist", newData);
       return "";
     }

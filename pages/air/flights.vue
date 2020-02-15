@@ -11,7 +11,9 @@
 
         <!-- 航班信息 -->
         <FlightsItem v-for="(item,index) in datalist" :key="index" :data="item" />
-        <div v-show="isshow" class="shuju"><span class=" el-icon-warning"></span>非常抱歉,没有找到相关结果,请修改筛选条件.</div>
+        <div v-show="isshow" class="shuju">
+          <span class="el-icon-warning"></span>非常抱歉,没有找到相关结果,请修改筛选条件.
+        </div>
         <!-- 分页 -->
         <el-pagination
           @size-change="handleSizeChange"
@@ -26,7 +28,7 @@
 
       <!-- 侧边栏 -->
       <div class="aside">
-        <!-- 侧边栏组件 -->
+        <FlightsAside />
       </div>
     </el-row>
   </section>
@@ -34,6 +36,7 @@
 
 <script>
 import moment from "moment";
+import FlightsAside from "@/components/air/flightsAside.vue";
 import FlightsHead from "@/components/air/flightsHead.vue";
 import FlightsItem from "@/components/air/flightsItem.vue";
 import FlightsFilters from "@/components/air/flightsFilters.vue";
@@ -50,14 +53,26 @@ export default {
       return arr;
     }
   },
+  // watch: {
+  // $route(){
+  //   this.pageIndex = 1
+  //   this.getData()
+  //  }
+  // },
+  beforeRouteUpdate(to, from, next) {
+    this.pageIndex = 1;
+    this.getData();
+    next();
+  },
   components: {
     FlightsHead,
     FlightsItem,
-    FlightsFilters
+    FlightsFilters,
+    FlightsAside
   },
   data() {
     return {
-      isshow : false,
+      isshow: false,
       flightsData: {
         info: {},
         flights: [],
@@ -74,30 +89,33 @@ export default {
     };
   },
   mounted() {
-    this.$axios({
-      url: "/airs",
-      params: this.$route.query
-    }).then(res => {
-      if (res.data.flights.length <= 0) {
-        this.$confirm("查无该城市航班,点击确定返回", "提示", {
-          type: "warning",
-          confirmButtonText: "确定",
-          showCancelButton: false,
-          beforeClose: (action, instance, done) => {
-            if (action === "confirm") {
-              this.$router.push("/air");
-              done();
-            }
-          }
-        });
-      }
-      console.log(res);
-      this.flightsData = res.data;
-      this.copyflights = { ...res.data };
-      this.total = res.data.total;
-    });
+    this.getData();
   },
   methods: {
+    getData() {
+      this.$axios({
+        url: "/airs",
+        params: this.$route.query
+      }).then(res => {
+        if (res.data.flights.length <= 0) {
+          this.$confirm("查无该城市航班,点击确定返回", "提示", {
+            type: "warning",
+            confirmButtonText: "确定",
+            showCancelButton: false,
+            beforeClose: (action, instance, done) => {
+              if (action === "confirm") {
+                this.$router.push("/air");
+                done();
+              }
+            }
+          });
+        }
+        console.log(res);
+        this.flightsData = res.data;
+        this.copyflights = { ...res.data };
+        this.total = res.data.total;
+      });
+    },
     //切换条数时触发的事件
     handleSizeChange(index) {
       console.log(index);
@@ -110,11 +128,11 @@ export default {
     },
     flightslist(data) {
       this.flightsData.flights = data;
-      this.total = data.length
-      if(data.length === 0){
-        this.isshow = true
-      }else{
-        this.isshow = false
+      this.total = data.length;
+      if (data.length === 0) {
+        this.isshow = true;
+      } else {
+        this.isshow = false;
       }
     }
   }
@@ -135,7 +153,7 @@ export default {
 .aside {
   width: 240px;
 }
-.shuju{
+.shuju {
   width: 100%;
   height: 50px;
   line-height: 50px;
@@ -143,9 +161,9 @@ export default {
   font-size: 18px;
   background-color: #ffffde;
 }
-.el-icon-warning{
+.el-icon-warning {
   margin-right: 10px;
   font-size: 24px;
-  color: #ffa41c
+  color: #ffa41c;
 }
 </style>
