@@ -81,10 +81,27 @@ export default {
         contactName: "",
         contactPhone: "",
         captcha: "",
-        invoice: false
+        invoice: false,
+        seat_xid: this.$route.query.seat_xid,
+        air: this.$route.query.id
       },
       optionair: []
     };
+  },
+  mounted() {
+    const { id, seat_xid } = this.$route.query;
+    this.$axios({
+      url: "/airs/" + id,
+      params: {
+        seat_xid
+      }
+    }).then(res => {
+      console.log(res);
+
+      this.optionair = res.data;
+      this.$store.commit("air/airData", this.optionair);
+      console.log(this.optionair);
+    });
   },
   methods: {
     // 添加乘机人
@@ -123,12 +140,12 @@ export default {
 
     handleSubmit() {
       const rules = {
-        user: {
+        users: {
           errorMessage: "乘机人信息不能为空",
           validator: () => {
             let valid = true;
             this.form.users.forEach(v => {
-              if (!v.username || v.id) {
+              if (!v.username || !v.id) {
                 valid = false;
               }
             });
@@ -164,6 +181,16 @@ export default {
         }
       });
       if (!valid) return;
+      this.$axios({
+        url: "/airorders",
+        method: "POST",
+        data: this.form,
+        headers: {
+          Authorization: `Bearer ` + this.$store.state.user.userInfo.token
+        }
+      }).then(res => {
+        console.log(res);
+      });
     }
   }
 };
