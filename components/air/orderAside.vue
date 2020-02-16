@@ -37,7 +37,7 @@
     </el-row>
     <el-row type="flex" justify="space-between" align="middle" class="info-bar">
       <span>应付总额：</span>
-      <span class="price">￥</span>
+      <span class="price">￥{{$store.state.air.allprice}}</span>
     </el-row>
   </div>
 </template>
@@ -71,7 +71,7 @@ export default {
       if (dis < 0) {
         dis = arrVal + 24 * 60 - depVal;
       }
-
+      
       // 得到相差时间
       return `${Math.floor(dis / 60)}时${dis % 60}分`;
     }

@@ -62,6 +62,7 @@
         </el-form>
         <el-button type="warning" class="submit" @click="handleSubmit">提交订单</el-button>
       </div>
+      {{allprice}}
     </div>
   </div>
 </template>
@@ -88,6 +89,28 @@ export default {
       optionair: []
     };
   },
+  computed: {
+    allprice() {
+      if (!this.optionair.seat_infos) {
+        return;
+      }
+      let price = 0;
+      //单价
+      price += this.optionair.seat_infos.org_settle_price;
+      //燃油费
+      price += this.optionair.airport_tax_audlet;
+      //保险费
+      this.optionair.insurances.forEach(v => {
+        if (this.form.insurances.indexOf(v.id) > -1) {
+          price += v.price;
+        }
+      });
+      //人数
+      price *= this.form.users.length;
+      this.$store.commit("air/price", price);
+      return "";
+    }
+  },
   mounted() {
     const { id, seat_xid } = this.$route.query;
     this.$axios({
@@ -98,8 +121,8 @@ export default {
     }).then(res => {
       console.log(res);
       this.optionair = res.data;
-      this.$store.commit("air/airData", this.optionair);
-      console.log(this.optionair);
+      this.$store.commit("air/orderData", this.optionair);
+      // console.log(this.optionair);
     });
   },
   methods: {
@@ -183,7 +206,7 @@ export default {
       this.$axios({
         url: "/airorders",
         method: "POST",
-        data: this.form,
+        data: this.form
         // headers: {
         //   Authorization: `Bearer ` + this.$store.state.user.userInfo.token
         // }

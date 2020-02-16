@@ -38,7 +38,12 @@
 </template>
 
 <script>
-export default {};
+export default {
+  mounted(){
+    console.log(this.$store.state.air.airs);
+    
+  }
+};
 </script>
 
 <style scoped lang="less">

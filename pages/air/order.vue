@@ -8,7 +8,7 @@
 
       <!-- 侧边栏 -->
       <div class="aside">
-        <OrderAside/>
+        <OrderAside :data="$store.state.air.orderDetail"/>
       </div>
     </el-row>
   </div>
