@@ -31,7 +31,11 @@
       <h2>保险</h2>
       <div>
         <div class="insurance-item" v-for="(item,index) in optionair.insurances" :key="index">
-          <el-checkbox :label="`${item.type}：￥${item.price}/份×1  最高赔付${item.compensation}`" @change="handleinsurances(item.id)"  border></el-checkbox>
+          <el-checkbox
+            :label="`${item.type}：￥${item.price}/份×1  最高赔付${item.compensation}`"
+            @change="handleinsurances(item.id)"
+            border
+          ></el-checkbox>
         </div>
       </div>
     </div>
@@ -74,7 +78,7 @@ export default {
           }
         ],
         insurances: [], //保险
-        contactName: "", 
+        contactName: "",
         contactPhone: "",
         captcha: "",
         invoice: false
@@ -92,13 +96,13 @@ export default {
     },
 
     //保险
-    handleinsurances(id){
-        const index = this.form.insurances.indexOf(id)
-        if(index < -1){
-            this.form.insurances.splice(index,1)
-        }else{
-            this.form.insurances.push(id)
-        }
+    handleinsurances(id) {
+      const index = this.form.insurances.indexOf(id);
+      if (index < -1) {
+        this.form.insurances.splice(index, 1);
+      } else {
+        this.form.insurances.push(id);
+      }
     },
 
     // 移除乘机人
@@ -108,32 +112,59 @@ export default {
 
     // 发送手机验证码
     handleSendCaptcha() {
-        if(!this.form.contactPhone){
-            this.$message.error('请输入手机号')
-            return
-        }
-        this.$store.dispatch('user/code',this.form.contactPhone).then(res=>{
-            this.$message.success('验证码为:000000')
-        })
+      if (!this.form.contactPhone) {
+        this.$message.error("请输入手机号");
+        return;
+      }
+      this.$store.dispatch("user/code", this.form.contactPhone).then(res => {
+        this.$message.success("验证码为:000000");
+      });
     },
 
-    // 提交订单
     handleSubmit() {
-      console.log(this.form.insurances);
+      const rules = {
+        user: {
+          errorMessage: "乘机人信息不能为空",
+          validator: () => {
+            let valid = true;
+            this.form.users.forEach(v => {
+              if (!v.username || v.id) {
+                valid = false;
+              }
+            });
+            return valid;
+          }
+        },
+        contactName: {
+          errorMessage: "联系人不能为空",
+          validator: () => {
+            return !!this.form.contactName;
+          }
+        },
+        contactPhone: {
+          errorMessage: "手机号不能为空",
+          validator: () => {
+            return !!this.form.contactPhone;
+          }
+        },
+        captcha: {
+          errorMessage: "验证码不能为空",
+          validator: () => {
+            return !!this.form.captcha;
+          }
+        }
+      };
+      let valid = true;
+      Object.keys(rules).forEach(v => {
+        if (!valid) return;
+        const item = rules[v];
+        valid = item.validator();
+        if (!valid) {
+          this.$message.error(item.errorMessage);
+        }
+      });
+      if (!valid) return;
     }
-  },
-  mounted() {
-    const { id, seat_xid } = this.$route.query;
-    this.$axios({
-      url: "/airs/" + id,
-      params: {
-        seat_xid
-      }
-    }).then(res => {
-      console.log(res);
-      this.optionair = res.data;
-      console.log(this.insurances);
-    });
   }
 };
 </script>
