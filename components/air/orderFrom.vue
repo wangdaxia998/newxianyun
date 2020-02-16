@@ -97,7 +97,6 @@ export default {
       }
     }).then(res => {
       console.log(res);
-
       this.optionair = res.data;
       this.$store.commit("air/airData", this.optionair);
       console.log(this.optionair);
@@ -185,9 +184,9 @@ export default {
         url: "/airorders",
         method: "POST",
         data: this.form,
-        headers: {
-          Authorization: `Bearer ` + this.$store.state.user.userInfo.token
-        }
+        // headers: {
+        //   Authorization: `Bearer ` + this.$store.state.user.userInfo.token
+        // }
       }).then(res => {
         console.log(res);
       });

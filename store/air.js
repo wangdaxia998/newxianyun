@@ -7,5 +7,6 @@ export const state = () => {
 export const mutations = {
     airData(state,data){
         state.airs.unshift(data)
+        state.airs.length = 5
     }
 }

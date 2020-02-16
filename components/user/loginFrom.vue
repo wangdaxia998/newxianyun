@@ -52,12 +52,12 @@ export default {
           //   this.$store.commit("user/getuser", data);
           //     console.log(this.$store);
           // });
-          this.$store.dispatch("user/login",this.form).then(()=>{
-            this.$message.success('登录成功')
-            this.$router.push('/')
-          })
-        }else{
-            this.$message.error('请输入用户名或密码')
+          this.$store.dispatch("user/login", this.form).then(() => {
+            this.$message.success("登录成功");
+            this.$router.replace(this.$route.query.returnUrl || "/");
+          });
+        } else {
+          this.$message.error("请输入用户名或密码");
         }
       });
     }

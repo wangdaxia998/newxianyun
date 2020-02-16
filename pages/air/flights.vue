@@ -61,8 +61,8 @@ export default {
   // },
   beforeRouteUpdate(to, from, next) {
     this.pageIndex = 1;
-    this.getData();
     next();
+    this.getData();
   },
   components: {
     FlightsHead,

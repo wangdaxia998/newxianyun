@@ -7,16 +7,20 @@
       </div>
 
       <!-- 侧边栏 -->
-      <div class="aside"></div>
+      <div class="aside">
+        <OrderAside/>
+      </div>
     </el-row>
   </div>
 </template>
 
 <script>
 import OrderFrom from "@/components/air/orderFrom.vue";
+import OrderAside from '@/components/air/orderAside.vue'
 export default {
   components: {
-    OrderFrom
+    OrderFrom,
+    OrderAside
   }
 };
 </script>
