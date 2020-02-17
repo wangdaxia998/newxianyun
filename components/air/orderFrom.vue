@@ -213,7 +213,6 @@ export default {
       }).then(res => {
         if (res.data.message === "订单提交成功") {
           const { id } = res.data.data;
-
           this.$router.push({
             path: "/air/pay",
             query: { id }

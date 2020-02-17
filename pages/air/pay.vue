@@ -3,7 +3,7 @@
     <div class="main">
       <div class="pay-title">
         支付总金额
-        <span class="pay-price">￥ 1000</span>
+        <span class="pay-price">￥ {{orderData.price}}</span>
       </div>
       <div class="pay-main">
         <h4>微信支付</h4>
@@ -24,7 +24,66 @@
 </template>
 
 <script>
-export default {};
+import QRCode from "qrcode";
+export default {
+  data() {
+    return {
+      orderData: "",
+      istime: ""
+    };
+  },
+  mounted() {
+    const { id } = this.$route.query;
+    setTimeout(() => {
+      this.$axios({
+        url: `/airorders/${id}`,
+        headers: {
+          Authorization: `Bearer ` + this.$store.state.user.userInfo.token
+        }
+      }).then(res => {
+        console.log(res);
+        const { price, payInfo } = res.data;
+        this.orderData = res.data;
+        const stage = document.getElementById("qrcode-stage");
+        QRCode.toCanvas(stage, payInfo.code_url, {
+          width: 200
+        });
+        this.istime = setInterval(() => {
+          this.ispay();
+        }, 3000);
+      });
+    }, 200);
+  },
+  // 离开当前组件时触发销毁
+  destroyed() {
+    clearInterval(this.istime);
+  },
+  methods: {
+    ispay() {
+      const { id, price, orderNo } = this.orderData;
+      this.$axios({
+        url: "/airorders/checkpay",
+        method: "POST",
+        data: {
+          id,
+          nonce_str: price,
+          out_trade_no: orderNo
+        },
+        headers: {
+          Authorization: `Bearer ` + this.$store.state.user.userInfo.token
+        }
+      }).then(res => {
+        if (res.data.statusTxt == "支付完成") {
+          clearInterval(this.istime);
+          this.$alert("支付成功", "提示", {
+            type: "success",
+            confirmButtonText: "确定"
+          });
+        }
+      });
+    }
+  }
+};
 </script>
 
 <style scoped lang="less">
