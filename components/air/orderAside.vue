@@ -48,7 +48,7 @@ export default {
     data: {
       type: Object,
       default: {
-          seat_infos:{}
+        seat_infos: {}
       }
     }
   },
@@ -71,7 +71,7 @@ export default {
       if (dis < 0) {
         dis = arrVal + 24 * 60 - depVal;
       }
-      
+
       // 得到相差时间
       return `${Math.floor(dis / 60)}时${dis % 60}分`;
     }

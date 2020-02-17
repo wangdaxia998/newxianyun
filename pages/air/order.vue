@@ -8,7 +8,7 @@
 
       <!-- 侧边栏 -->
       <div class="aside">
-        <OrderAside :data="$store.state.air.orderDetail"/>
+        <OrderAside :data="$store.state.air.orderDetail" />
       </div>
     </el-row>
   </div>
@@ -16,7 +16,7 @@
 
 <script>
 import OrderFrom from "@/components/air/orderFrom.vue";
-import OrderAside from '@/components/air/orderAside.vue'
+import OrderAside from "@/components/air/orderAside.vue";
 export default {
   components: {
     OrderFrom,

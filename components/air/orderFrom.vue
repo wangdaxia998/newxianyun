@@ -206,12 +206,19 @@ export default {
       this.$axios({
         url: "/airorders",
         method: "POST",
-        data: this.form
-        // headers: {
-        //   Authorization: `Bearer ` + this.$store.state.user.userInfo.token
-        // }
+        data: this.form,
+        headers: {
+          Authorization: `Bearer ` + this.$store.state.user.userInfo.token
+        }
       }).then(res => {
-        console.log(res);
+        if (res.data.message === "订单提交成功") {
+          const { id } = res.data.data;
+
+          this.$router.push({
+            path: "/air/pay",
+            query: { id }
+          });
+        }
       });
     }
   }
